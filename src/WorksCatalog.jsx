@@ -459,7 +459,7 @@ const WorksCatalog = () => {
           </div>
 
           <p className="mt-5 text-sm text-slate-300/75">
-            作品をクリックして、物語の世界へ。
+            A collection of stories and characters created by Arumiran.
           </p>
         </header>
 
