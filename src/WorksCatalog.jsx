@@ -440,10 +440,7 @@ const WorksCatalog = () => {
                           </div>
 
                           <div className="mt-2">
-                            <ClampText
-                              text={char.description}
-                              clampLines={3}
-                            />
+                            <ClampText text={char.description} clampLines={3} />
                           </div>
                         </div>
                       </div>
@@ -490,7 +487,7 @@ const WorksCatalog = () => {
           </div>
 
           <p className="mt-5 text-sm text-slate-300/75">
-            A catalog of works and characters created by Arumiran.
+            あるみらん / Arumiranの作品アーカイブ
           </p>
         </header>
 
@@ -503,9 +500,11 @@ const WorksCatalog = () => {
                 key={work.id}
                 onClick={() => setSelectedWork(work.id)}
                 className={cx(
-                  "text-left rounded-3xl overflow-hidden border transition",
-                  t.cardBg,
+                  "text-left rounded-3xl overflow-hidden border",
+                  "transform-gpu transition duration-200 ease-out",
+                  "hover:-translate-y-1 hover:shadow-[0_14px_40px_rgba(0,0,0,0.28)]",
                   "focus:outline-none focus:ring-2 focus:ring-white/20",
+                  t.cardBg,
                   t.cardBorder
                 )}
               >
