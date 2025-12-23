@@ -185,7 +185,7 @@ const WorksCatalog = () => {
           },
           {
             name: "イヴ（）",
-            role: "？",
+            role: "—",
             description: "準備中",
             image: "/characters/eve.jpg",
           },
@@ -555,6 +555,57 @@ const WorksCatalog = () => {
             );
           })}
         </div>
+
+{/* Author section */}
+<section className="mt-16 flex flex-col items-center text-center gap-3">
+  <img
+    src="/arumiran.png"
+    alt="あるみらん / Arumiran"
+    className="w-20 h-20 rounded-full border border-white/20"
+  />
+
+  {/* Name */}
+  <p className="mt-2 text-lg font-semibold tracking-wide text-slate-100">
+    あるみらん / Arumiran
+  </p>
+
+  {/* Role */}
+  <p className="text-sm text-slate-300/80">
+    ビジュアルストーリーテラー･創作家
+  </p>
+
+  {/* Description */}
+  <p className="mt-2 text-sm text-slate-200/80 leading-relaxed max-w-md">
+    漫画・絵画・イラスト・映像など複数の表現で、
+    物語性のあるオリジナルIPを制作。<br />
+    感情、物語を軸に世界を描いています。
+  </p>
+
+  {/* Link */}
+  <a
+    href="https://lit.link/arurutan"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="mt-3 text-sm text-amber-200 hover:text-amber-100 transition underline underline-offset-4"
+  >
+    litlink（ご依頼・ポートフォリオ・SNSはこちら）
+  </a>
+
+{/* Contact */}
+<p className="mt-2 text-sm text-slate-300/80">
+  お仕事のご相談（個人の方も歓迎）<br />
+  <a
+    href="mailto:arararararura@gmail.com"
+    className="inline-flex items-center gap-1 underline underline-offset-4 hover:text-slate-100 transition"
+  >
+    ✉️ arararararura@gmail.com
+  </a>
+</p>
+
+
+</section>
+
+
 
         <footer className="mt-12 text-center text-xs text-slate-500">
           Crafted for Arumiran — Works & Characters
