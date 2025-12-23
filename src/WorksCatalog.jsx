@@ -582,7 +582,7 @@ const WorksCatalog = () => {
                   </p>
 
                   <div className="mt-4 flex items-center justify-between text-xs text-slate-400">
-                    <span>Open</span>
+                    <span></span>
                     <span className={cx("tracking-[0.2em]", t.accentText)}>
                       ENTER →
                     </span>
