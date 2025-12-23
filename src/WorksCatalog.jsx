@@ -195,7 +195,7 @@ const WorksCatalog = () => {
         id: 2,
         title: "悪魔シリーズ",
         subtitle: "Demon Series",
-        image: "https://picsum.photos/seed/devilseries/1400/900",
+        image: "/characters/king.jpg",
         theme: {
           pageBg: "bg-[#11060D]",
           glow:
