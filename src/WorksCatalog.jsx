@@ -6,22 +6,49 @@ function cx(...classes) {
 }
 
 /**
- * 背景模様用（SVGをdata URIで埋め込み）
- * - catalog: 古地図っぽい格子＋点
- * - sea: 波紋（夏の海）
- * - demon: ステンドグラス風（ゴシックっぽい多角形）
+ * SVG文字列を安全な data URI に変換
+ * - encodeURIComponent で壊れにくくする
  */
-const PATTERN = {
-  catalog:
-    "bg-[url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><rect width='160' height='160' fill='none'/><path d='M0 32H160M0 64H160M0 96H160M0 128H160' stroke='rgba(255,255,255,0.06)' stroke-width='1'/><path d='M32 0V160M64 0V160M96 0V160M128 0V160' stroke='rgba(255,255,255,0.05)' stroke-width='1'/><circle cx='40' cy='40' r='1.5' fill='rgba(255,255,255,0.10)'/><circle cx='120' cy='88' r='1.5' fill='rgba(255,255,255,0.10)'/><circle cx='76' cy='132' r='1.5' fill='rgba(255,255,255,0.10)'/></svg>\")]",
-  sea:
-    "bg-[url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><rect width='220' height='220' fill='none'/><circle cx='110' cy='110' r='42' fill='none' stroke='rgba(255,255,255,0.08)' stroke-width='1'/><circle cx='110' cy='110' r='74' fill='none' stroke='rgba(255,255,255,0.06)' stroke-width='1'/><circle cx='110' cy='110' r='102' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='1'/><path d='M24 160c22-18 46-18 68 0s46 18 68 0 46-18 68 0' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='1'/></svg>\")]",
-  demon:
-    "bg-[url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><rect width='220' height='220' fill='none'/><path d='M20 40 L110 20 L200 60 L180 150 L90 200 L30 140 Z' fill='none' stroke='rgba(255,255,255,0.06)' stroke-width='1'/><path d='M60 70 L120 55 L170 90 L150 160 L95 175 L55 130 Z' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='1'/><path d='M40 190 L110 120 L200 200' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='1'/></svg>\")]",
+function svgToDataUri(svg) {
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
+/**
+ * 背景模様（SVG）
+ * 重要: rgba(...) を使うと環境によって「無効→透明」扱いになり模様が消えることがある。
+ * なので #ffffff + (stroke-opacity / fill-opacity) で統一して、確実に表示させる。
+ */
+const PATTERN_SVG = {
+  catalog: `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160">
+    <rect width="160" height="160" fill="none"/>
+    <path d="M0 32H160M0 64H160M0 96H160M0 128H160" stroke="#ffffff" stroke-opacity="0.10" stroke-width="1"/>
+    <path d="M32 0V160M64 0V160M96 0V160M128 0V160" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+    <circle cx="40" cy="40" r="1.5" fill="#ffffff" fill-opacity="0.18"/>
+    <circle cx="120" cy="88" r="1.5" fill="#ffffff" fill-opacity="0.18"/>
+    <circle cx="76" cy="132" r="1.5" fill="#ffffff" fill-opacity="0.18"/>
+  </svg>`,
+
+  sea: `<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220">
+    <rect width="220" height="220" fill="none"/>
+    <circle cx="110" cy="110" r="42" fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1"/>
+    <circle cx="110" cy="110" r="74" fill="none" stroke="#ffffff" stroke-opacity="0.09" stroke-width="1"/>
+    <circle cx="110" cy="110" r="102" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1"/>
+    <path d="M24 160c22-18 46-18 68 0s46 18 68 0 46-18 68 0"
+      fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1"/>
+  </svg>`,
+
+  demon: `<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220">
+    <rect width="220" height="220" fill="none"/>
+    <path d="M20 40 L110 20 L200 60 L180 150 L90 200 L30 140 Z"
+      fill="none" stroke="#ffffff" stroke-opacity="0.10" stroke-width="1"/>
+    <path d="M60 70 L120 55 L170 90 L150 160 L95 175 L55 130 Z"
+      fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+    <path d="M40 190 L110 120 L200 200"
+      fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  </svg>`,
 };
 
 const Ornament = ({ tone = "amber" }) => {
-  // tone: "amber" | "sky" | "rose"
   const line =
     tone === "sky"
       ? "bg-sky-200/30"
@@ -52,19 +79,25 @@ const Ornament = ({ tone = "amber" }) => {
 const ClampText = ({ text, clampLines = 3 }) => {
   const [open, setOpen] = useState(false);
 
-  // 改行ありテキストでも「短文」を成立させるため
-  // - open=false のときは line-clamp で折る
-  // - open=true のときは全文表示
+  // Tailwindは動的クラスを拾えないので固定マップ化
+  const clampClass =
+    clampLines === 2
+      ? "line-clamp-2"
+      : clampLines === 4
+      ? "line-clamp-4"
+      : "line-clamp-3";
+
   return (
     <div>
       <p
         className={cx(
           "text-slate-200/85 leading-relaxed whitespace-pre-line",
-          !open && `line-clamp-${clampLines}`
+          !open && clampClass
         )}
       >
         {text}
       </p>
+
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -97,11 +130,10 @@ const WorksCatalog = () => {
         subtitle: "Princess Blue Anemone",
         image: "/characters/all.jpg",
         theme: {
-          // 夏の海：明るいシアン〜青、白の泡っぽさ
           pageBg: "bg-[#071524]",
           glow:
             "bg-[radial-gradient(1000px_circle_at_15%_10%,rgba(56,189,248,0.22),transparent_55%),radial-gradient(900px_circle_at_80%_20%,rgba(14,165,233,0.18),transparent_55%),radial-gradient(900px_circle_at_50%_95%,rgba(255,255,255,0.06),transparent_55%)]",
-          pattern: PATTERN.sea,
+          patternKey: "sea",
           tone: "sky",
           accentText: "text-sky-100",
           subText: "text-sky-100/70",
@@ -114,8 +146,7 @@ const WorksCatalog = () => {
             "border border-sky-100/25 text-sky-50 hover:bg-sky-100/10",
           titleFont: "font-[var(--font-display)] tracking-[0.12em]",
         },
-        summary:
-          "「王女のブルーアネモネ号」",
+        summary: "「王女のブルーアネモネ号」",
         characters: [
           {
             name: "アドニス（20）",
@@ -155,24 +186,21 @@ const WorksCatalog = () => {
           {
             name: "イヴ（）",
             role: "？",
-            description:
-              "準備中",
+            description: "準備中",
             image: "/characters/eve.jpg",
           },
         ],
       },
-
       {
         id: 2,
         title: "悪魔シリーズ",
         subtitle: "Demon Series",
         image: "https://picsum.photos/seed/devilseries/1400/900",
         theme: {
-          // ゴシック：深紅×紫、少しガラス模様
           pageBg: "bg-[#11060D]",
           glow:
             "bg-[radial-gradient(1000px_circle_at_20%_10%,rgba(244,63,94,0.14),transparent_55%),radial-gradient(900px_circle_at_80%_30%,rgba(168,85,247,0.13),transparent_55%),radial-gradient(900px_circle_at_40%_95%,rgba(255,255,255,0.05),transparent_55%)]",
-          pattern: PATTERN.demon,
+          patternKey: "demon",
           tone: "rose",
           accentText: "text-rose-100",
           subText: "text-rose-100/70",
@@ -249,16 +277,13 @@ const WorksCatalog = () => {
     []
   );
 
-  const selected = selectedWork
-    ? works.find((w) => w.id === selectedWork)
-    : null;
+  const selected = selectedWork ? works.find((w) => w.id === selectedWork) : null;
 
-  // トップ（一覧）は「古地図」っぽく落ち着いた別テーマにする
   const catalogTheme = {
     pageBg: "bg-[#0A0C12]",
     glow:
       "bg-[radial-gradient(1000px_circle_at_15%_10%,rgba(245,158,11,0.14),transparent_55%),radial-gradient(900px_circle_at_80%_20%,rgba(59,130,246,0.10),transparent_55%),radial-gradient(900px_circle_at_50%_95%,rgba(255,255,255,0.06),transparent_55%)]",
-    pattern: PATTERN.catalog,
+    patternKey: "catalog",
     tone: "amber",
     accentText: "text-amber-200",
     subText: "text-slate-300/70",
@@ -272,17 +297,27 @@ const WorksCatalog = () => {
 
   const theme = selected?.theme ?? catalogTheme;
 
+  const patternUri = svgToDataUri(
+    PATTERN_SVG[theme.patternKey] ?? PATTERN_SVG.catalog
+  );
+
   const Shell = ({ children }) => (
-    <div className={cx("min-h-screen", theme.pageBg, "text-slate-100")}>
+    <div className={cx("min-h-screen relative", theme.pageBg, "text-slate-100")}>
       <div className={cx("absolute inset-0 pointer-events-none", theme.glow)} />
+
+      {/* pattern: 確実に出る版 */}
       <div
-        className={cx(
-          "absolute inset-0 pointer-events-none opacity-[0.55]",
-          theme.pattern
-        )}
+        className="absolute inset-0 pointer-events-none opacity-[0.75]"
+        style={{
+          backgroundImage: `url("${patternUri}")`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "auto",
+        }}
       />
+
       {/* subtle grain */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.06] bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22><filter id=%22n%22 x=%220%22 y=%220%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%222%22 stitchTiles=%22stitch%22/></filter><rect width=%2240%22 height=%2240%22 filter=%22url(%23n)%22 opacity=%220.45%22/></svg>')]" />
+
       <div className="relative z-10">{children}</div>
     </div>
   );
@@ -404,9 +439,11 @@ const WorksCatalog = () => {
                             </span>
                           </div>
 
-                          {/* 短文/全文トグル */}
                           <div className="mt-2">
-                            <ClampText text={char.description} clampLines={3} />
+                            <ClampText
+                              text={char.description}
+                              clampLines={3}
+                            />
                           </div>
                         </div>
                       </div>
@@ -414,8 +451,7 @@ const WorksCatalog = () => {
                   ))}
                 </div>
 
-                <p className="mt-6 text-xs text-slate-400">
-                </p>
+                <p className="mt-6 text-xs text-slate-400"></p>
               </section>
             </div>
           </div>
@@ -445,12 +481,7 @@ const WorksCatalog = () => {
             Works Archive
           </div>
 
-          <h1
-            className={cx(
-              "mt-3 text-4xl md:text-6xl",
-              catalogTheme.titleFont
-            )}
-          >
+          <h1 className={cx("mt-3 text-4xl md:text-6xl", catalogTheme.titleFont)}>
             Arumiran&apos;s Works
           </h1>
 
@@ -459,7 +490,7 @@ const WorksCatalog = () => {
           </div>
 
           <p className="mt-5 text-sm text-slate-300/75">
-            A collection of stories and characters created by Arumiran.
+            A catalog of works and characters created by Arumiran.
           </p>
         </header>
 
