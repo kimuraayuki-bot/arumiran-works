@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { ArrowLeft, ChevronDown, ChevronUp } from "lucide-react";
 
 function cx(...classes) {
@@ -185,7 +185,7 @@ const WorksCatalog = () => {
           },
           {
             name: "イヴ（）",
-            role: "—",
+            role: "？",
             description: "準備中",
             image: "/characters/eve.jpg",
           },
@@ -277,6 +277,41 @@ const WorksCatalog = () => {
     []
   );
 
+  // ===== ここから「戻る/進む対応」 =====
+
+  // URLから選択状態を復元（初期表示 & popstate）
+  useEffect(() => {
+    const syncFromUrl = () => {
+      const path = window.location.pathname;
+      const m = path.match(/^\/works\/(\d+)$/);
+
+      if (m) {
+        const id = Number(m[1]);
+        setSelectedWork(Number.isFinite(id) ? id : null);
+      } else {
+        setSelectedWork(null);
+      }
+    };
+
+    syncFromUrl();
+    window.addEventListener("popstate", syncFromUrl);
+    return () => window.removeEventListener("popstate", syncFromUrl);
+  }, []);
+
+  // 作品を開く（履歴を積む）
+  const openWork = (id) => {
+    setSelectedWork(id);
+    window.history.pushState({}, "", `/works/${id}`);
+  };
+
+  // 一覧に戻る（履歴を積む）
+  const closeWork = () => {
+    setSelectedWork(null);
+    window.history.pushState({}, "", `/`);
+  };
+
+  // ===== ここまで =====
+
   const selected = selectedWork ? works.find((w) => w.id === selectedWork) : null;
 
   const catalogTheme = {
@@ -330,7 +365,7 @@ const WorksCatalog = () => {
       <Shell>
         <div className="max-w-6xl mx-auto px-4 md:px-8 py-10">
           <button
-            onClick={() => setSelectedWork(null)}
+            onClick={closeWork}
             className={cx(
               "inline-flex items-center gap-2 rounded-full px-4 py-2 transition",
               "bg-white/5 backdrop-blur border",
@@ -478,7 +513,9 @@ const WorksCatalog = () => {
             Works Archive
           </div>
 
-          <h1 className={cx("mt-3 text-4xl md:text-6xl", catalogTheme.titleFont)}>
+          <h1
+            className={cx("mt-3 text-4xl md:text-6xl", catalogTheme.titleFont)}
+          >
             Arumiran&apos;s Works
           </h1>
 
@@ -498,7 +535,7 @@ const WorksCatalog = () => {
             return (
               <button
                 key={work.id}
-                onClick={() => setSelectedWork(work.id)}
+                onClick={() => openWork(work.id)}
                 className={cx(
                   "text-left rounded-3xl overflow-hidden border",
                   "transform-gpu transition duration-200 ease-out",
@@ -556,56 +593,52 @@ const WorksCatalog = () => {
           })}
         </div>
 
-{/* Author section */}
-<section className="mt-16 flex flex-col items-center text-center gap-3">
-  <img
-    src="/arumiran.png"
-    alt="あるみらん / Arumiran"
-    className="w-20 h-20 rounded-full border border-white/20"
-  />
+        {/* Author section */}
+        <section className="mt-16 flex flex-col items-center text-center gap-3">
+          <img
+            src="/arumiran.png"
+            alt="あるみらん / Arumiran"
+            className="w-20 h-20 rounded-full border border-white/20"
+          />
 
-  {/* Name */}
-  <p className="mt-2 text-lg font-semibold tracking-wide text-slate-100">
-    あるみらん / Arumiran
-  </p>
+          {/* Name */}
+          <p className="mt-2 text-lg font-semibold tracking-wide text-slate-100">
+            あるみらん / Arumiran
+          </p>
 
-  {/* Role */}
-  <p className="text-sm text-slate-300/80">
-    ビジュアルストーリーテラー･創作家
-  </p>
+          {/* Role */}
+          <p className="text-sm text-slate-300/80">
+            ビジュアルストーリーテラー･創作家
+          </p>
 
-  {/* Description */}
-  <p className="mt-2 text-sm text-slate-200/80 leading-relaxed max-w-md">
-    漫画・絵画・イラスト・映像など複数の表現で、
-    物語性のあるオリジナルIPを制作。<br />
-    感情、物語を軸に世界を描いています。
-  </p>
+          {/* Description */}
+          <p className="mt-2 text-sm text-slate-200/80 leading-relaxed max-w-md">
+            漫画・絵画・イラスト・映像など複数の表現で、
+            物語性のあるオリジナルIPを制作。<br />
+            感情、物語を軸に世界を描いています。
+          </p>
 
-  {/* Link */}
-  <a
-    href="https://lit.link/arurutan"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="mt-3 text-sm text-amber-200 hover:text-amber-100 transition underline underline-offset-4"
-  >
-    litlink（ご依頼・ポートフォリオ・SNSはこちら）
-  </a>
+          {/* Link */}
+          <a
+            href="https://lit.link/arurutan"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 text-sm text-amber-200 hover:text-amber-100 transition underline underline-offset-4"
+          >
+            litlink（ご依頼・ポートフォリオ・SNSはこちら）
+          </a>
 
-{/* Contact */}
-<p className="mt-2 text-sm text-slate-300/80">
-  お仕事のご相談（個人の方も歓迎）<br />
-  <a
-    href="mailto:arararararura@gmail.com"
-    className="inline-flex items-center gap-1 underline underline-offset-4 hover:text-slate-100 transition"
-  >
-    ✉️ arararararura@gmail.com
-  </a>
-</p>
-
-
-</section>
-
-
+          {/* Contact */}
+          <p className="mt-2 text-sm text-slate-300/80">
+            お仕事のご相談（個人の方も歓迎）<br />
+            <a
+              href="mailto:arararararura@gmail.com"
+              className="inline-flex items-center gap-1 underline underline-offset-4 hover:text-slate-100 transition"
+            >
+              ✉️ arararararura@gmail.com
+            </a>
+          </p>
+        </section>
 
         <footer className="mt-12 text-center text-xs text-slate-500">
           Crafted for Arumiran — Works & Characters
