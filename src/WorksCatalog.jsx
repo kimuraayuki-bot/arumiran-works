@@ -95,7 +95,7 @@ const WorksCatalog = () => {
         id: 1,
         title: "王女のブルーアネモネ号",
         subtitle: "Princess Blue Anemone",
-        image: "https://picsum.photos/seed/blueanemone/1400/900",
+        image: "/characters/all.jpg",
         theme: {
           // 夏の海：明るいシアン〜青、白の泡っぽさ
           pageBg: "bg-[#071524]",
@@ -122,35 +122,42 @@ const WorksCatalog = () => {
             role: "船長",
             description:
               "北の海の海賊、ケートスの息子で、西国に処刑されるはずだったが、\n処刑直前でなぜかグッドマン伯爵に助けられた。\n行方不明となった妹のティナを探し出すため伯爵と取引をし、\n以降私掠船プリンセス・ブルーアネモネ号の船長として西国の\n私掠に加担している。\n温和で思慮深く慕われているが、たまにずれている。\n操船術や自然の観察力に長けており、航海士としての腕は超一流。",
-            image: "https://i.pravatar.cc/200?img=12",
+            image: "/characters/adonis.jpg",
           },
           {
             name: "ビル（20）",
             role: "クルー",
             description:
               "貧民街の生まれで過酷な幼少期をすごす。\n文字も読めず言葉もまともに発せなかったが、まだ海賊の卵\nだったアドニスと妹ティナに出会い、生きる術を教わった。\n自身を地獄から救い出してくれた二人に恩を感じており、\n以来忠誠を尽くしている。無口だが情に厚い男。",
-            image: "https://i.pravatar.cc/200?img=13",
+            image: "/characters/bill.jpg",
           },
           {
             name: "ペトラ（16）",
             role: "船医",
             description:
               "中流階級の医師の一人娘。女の身の生きづらさから、自由を\n求めて船に乗り込んだ。毒素が船上戦での負傷者を\n救護する姿から、女とバレてしまった後も船医としても重宝されている。\nしっかり者で男勝りな性格だけど、ちゃんと乙女な一面も。\n実は海賊時代のアドニスと面識があり、ペトラの初恋の人だったり。",
-            image: "https://i.pravatar.cc/200?img=45",
+            image: "/characters/petra.jpg",
           },
           {
             name: "ランポート（24）",
             role: "主計長",
             description:
               "大貴族であるウルクス子爵家の現当主だが、ブルーアネモネ号の\n出資者かつ亡き父の借金の債権者であるグッドマン伯爵の要求で\n仕方なく主計長としてブルーアネモネ号に乗り込んでいる。\nその正体を知っているのは今のところアドニスとビルのみ。\n博学かつ社交界特有の立ち回りが上手く、貴族の間では「賢者」と\n名高いが、船の上ではパンガ相手にしょっちゅう怒ってる。\n婚約者がいるが、あまり会えず申し訳ないと思っている。",
-            image: "https://i.pravatar.cc/200?img=14",
+            image: "/characters/lamport.jpg",
           },
           {
             name: "パンガ（18）",
             role: "クルー",
             description:
               "積まれていた奴隷船が難破し岸に流れ着いたところに、停泊中の\nブルーアネモネ号を発見。故郷の島を見つけるまでと言い張って\n勝手に乗船している。粗野で無遠慮な振舞いからしょっちゅう\nランポートを怒らせているが、本人は大して気にしていない。\n戦闘舞踏民族で踊りが得意。大食いだが料理も上手く、船員たちの\n胃袋をつかんでいる。",
-            image: "https://i.pravatar.cc/200?img=48",
+            image: "/characters/panga.jpg",
+          },
+          {
+            name: "イヴ（）",
+            role: "？",
+            description:
+              "準備中",
+            image: "/characters/eve.jpg",
           },
         ],
       },
