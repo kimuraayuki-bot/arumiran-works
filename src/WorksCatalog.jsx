@@ -14,6 +14,26 @@ function svgToDataUri(svg) {
 }
 
 /**
+ * YouTube再生リストURL（watch/playlist）→ 埋め込み用URL（videoseries）へ変換
+ * 例:
+ * - https://www.youtube.com/playlist?list=PLxxxx
+ * - https://www.youtube.com/watch?v=xxxx&list=PLxxxx
+ * → https://www.youtube.com/embed/videoseries?list=PLxxxx
+ */
+function playlistToEmbedUrl(url) {
+  if (!url) return null;
+
+  try {
+    const u = new URL(url);
+    const list = u.searchParams.get("list");
+    if (!list) return null;
+    return `https://www.youtube.com/embed/videoseries?list=${list}`;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * 背景模様（SVG）
  * 重要: rgba(...) を使うと環境によって「無効→透明」扱いになり模様が消えることがある。
  * なので #ffffff + (stroke-opacity / fill-opacity) で統一して、確実に表示させる。
@@ -66,7 +86,6 @@ const PATTERN_SVG = {
   <circle cx="190" cy="90" r="1.2" fill="#ffffff" fill-opacity="0.15"/>
   <circle cx="140" cy="190" r="1.4" fill="#ffffff" fill-opacity="0.16"/>
 </svg>`,
-
 };
 
 const Ornament = ({ tone = "amber" }) => {
@@ -143,9 +162,10 @@ const ClampText = ({ text, clampLines = 3 }) => {
 const WorksCatalog = () => {
   const [selectedWork, setSelectedWork] = useState(null);
 
-  // ★ Characters と 相関図は「同列」なので state も別々
+  // ★ Characters / 相関図 / その他の資料 は同列なので state も別々
   const [charactersOpen, setCharactersOpen] = useState(true);
   const [relationsOpen, setRelationsOpen] = useState(true);
+  const [materialsOpen, setMaterialsOpen] = useState(true); // ★追加
 
   const works = useMemo(
     () => [
@@ -173,8 +193,18 @@ const WorksCatalog = () => {
         },
         summary: "王女のブルーアネモネ号",
 
+        // ★YouTube再生リストURL（ここを差し替え）
+        playlistUrl: "https://www.youtube.com/playlist?list=PL7vGDFSIdqcCWFHSTTX7_EQet-5BRoSVh",
+
         // ★相関図：ここに画像パスをコピペで増やすだけ
         relationImages: ["/characters/bs1.jpg", "/characters/bs2.jpg"],
+
+        // ★その他の資料：ここに画像パスをコピペで増やすだけ
+        materialsImages: [
+          "/characters/bset1.jpg",
+          "/characters/bset2.jpg",
+          "/characters/bset3.jpg",
+        ],
 
         characters: [
           {
@@ -195,7 +225,7 @@ const WorksCatalog = () => {
             name: "ペトラ（16）",
             role: "船医",
             description:
-              "中流階級の医師の一人娘。女の身の生きづらさから、自由を求めて船に乗り込んだ。\n船上戦での負傷者を救護する姿から、女とバレてしまった後も船医としても重宝されている。\nしっかり者で男勝りな性格だけど、ちゃんと乙女な一面も。\n実は海賊時代のアドニスと面識があり、ペトラの初恋の人だったり。",
+              "中流階級の医師の一人娘。\n女の身の生きづらさから、自由を求めて船に乗り込んだ。\n船上戦での負傷者を救護する姿から、女とバレてしまった後も船医としても重宝されている。\nしっかり者で男勝りな性格だけど、ちゃんと乙女な一面も。\n実は海賊時代のアドニスと面識があり、ペトラの初恋の人だったり。",
             image: "/characters/petra.jpg",
           },
           {
@@ -216,7 +246,7 @@ const WorksCatalog = () => {
             name: "ヘイゼル･ド･ヴィクトーニャ（17）",
             role: "—",
             description:
-              "ランポートの婚約者。ある私掠船の船員に身分違いの恋をしたと苛まれていたが、それは婚約者のランポートが扮した姿だった。\nランポートは隠しているようなので、いつか彼から話してくれるまで健気に陸で待ち続けている。\n引っ込み思案で恥ずかしがりな性格。",
+              "ランポートの婚約者。\nある私掠船の船員に身分違いの恋をしたと苛まれていたが、それは婚約者のランポートが扮した姿だった。\nランポートは隠しているようなので、いつか彼から話してくれるまで健気に陸で待ち続けている。\n引っ込み思案で恥ずかしがりな性格。",
             image: "/characters/hazel.jpg",
           },
           { name: "イヴ", role: "—", description: "準備中", image: "/characters/eve.jpg" },
@@ -239,10 +269,7 @@ const WorksCatalog = () => {
             description: "準備中",
             image: "/characters/cetus.jpg",
           },
-          { name: "ミラ", 
-            role: "—", 
-            description: "準備中", 
-            image: "/characters/mira.jpg" },
+          { name: "ミラ", role: "—", description: "準備中", image: "/characters/mira.jpg" },
         ],
       },
       {
@@ -269,10 +296,27 @@ const WorksCatalog = () => {
         },
         summary: "悪魔シリーズ",
 
-        // ★相関図：ここに画像パスをコピペで増やすだけ
+        // ★YouTube再生リストURL（ここを差し替え）
+        playlistUrl: "https://www.youtube.com/playlist?list=PL7vGDFSIdqcBRpCu6NK9Et2cG2DZBGDNc",
+
         relationImages: ["/characters/ds.jpg"],
+        materialsImages: ["/characters/dset1.jpg", "/characters/dset2.jpg", "/characters/dset3.jpg","/characters/dset4.jpg"],
 
         characters: [
+          {
+            name: "グラクラ",
+            role: "—",
+            description:
+              "九官鳥の悪魔。自由自在に声色を操り、人間を騙し誘い出す。\nリヴァイアサンの側近兼友として地獄に人を導く役割を担っていたが、リヴァイアサンがギムレットに殺された際自身も深手を追い、人間界へと逃げ堕ちた。\n傷の手当てをしてくれた淡香に対価を払うため、(食事のついでに)両親を殺したことで淡香に惚れられてしまう。\n淡香と付き合ってる方が面白そうだという理由で、地獄に戻らず人の姿で暮らしている。\n時々刺されるが、そんなところがかわいいらしい。",
+            image: "/characters/gracula.jpg",
+          },
+          {
+            name: "鰐梨淡香（21）",
+            role: "—",
+            description:
+              "グラクラの恋人で愛が重ための女子大学生。\n幼少期、毒親だった両親を殺されたことをきっかけにグラクラに惚れ、執拗に探し続けついに大学で再会を果たした。\nグラクラが人間でないことは割とどうでもよく、自分さえ見ててくれればそれでいいと思っている。\nふらふらしがちなグラクラにキレて何回も刺したことがある。",
+            image: "/characters/ayaka.jpg",
+          },
           {
             name: "ミリオン",
             role: "—",
@@ -329,33 +373,19 @@ const WorksCatalog = () => {
               "かつては豊穣の神であったが、異教として貶められ悪魔となった。\n満たされない飢えという業をせおっている。",
             image: "/characters/beelzebub.jpg",
           },
-          {
-            name: "鰐梨淡香（21）",
-            role: "—",
-            description:
-              "グラクラの恋人で愛が重ための女子大学生。\n幼少期、毒親だった両親を殺されたことをきっかけにグラクラに惚れ、執拗に探し続けついに大学で再会を果たした。\nグラクラが人間でないことは割とどうでもよく、自分さえ見ててくれればそれでいいと思っている。\nふらふらしがちなグラクラにキレて何回も刺したことがある。",
-            image: "/characters/ayaka.jpg",
-          },
-          {
-            name: "グラクラ",
-            role: "—",
-            description:
-              "九官鳥の悪魔。自由自在に声色を操り、人間を騙し誘い出す。\nリヴァイアサンの側近兼友として地獄に人を導く役割を担っていたが、リヴァイアサンがギムレットに殺された際自身も深手を追い、人間界へと逃げ堕ちた。\n傷の手当てをしてくれた淡香に対価を払うため、(食事のついでに)両親を殺したことで淡香に惚れられてしまう。\n淡香と付き合ってる方が面白そうだという理由で、地獄に戻らず人の姿で暮らしている。\n時々刺されるが、そんなところがかわいいらしい。",
-            image: "/characters/gracula.jpg",
-          },
         ],
       },
-            {
+      {
         id: 3,
         title: "人類と魔族が手を取り合った後の話",
         subtitle: "Post Demon War",
         image: "/characters/pdw.jpg",
         theme: {
-          pageBg: "bg-[#120A1F]", // 濃い紫
+          pageBg: "bg-[#120A1F]",
           glow:
             "bg-[radial-gradient(1000px_circle_at_20%_15%,rgba(168,85,247,0.22),transparent_55%),radial-gradient(900px_circle_at_80%_25%,rgba(236,72,153,0.14),transparent_55%),radial-gradient(900px_circle_at_50%_95%,rgba(255,255,255,0.05),transparent_55%)]",
-          patternKey: "postDemonWar", // ★新しい模様キー
-          tone: "rose", // 既存の rose を流用
+          patternKey: "postDemonWar",
+          tone: "rose",
           accentText: "text-fuchsia-100",
           subText: "text-fuchsia-100/70",
           line: "bg-fuchsia-200/30",
@@ -370,8 +400,12 @@ const WorksCatalog = () => {
 
         summary: "人類と魔族が手を取り合った後の話",
 
-        // ★相関図：ここに画像パスをコピペで増やすだけ
-        //relationImages: ["/characters/bs1.jpg", "/characters/bs2.jpg"],
+        // ★YouTube再生リストURL（ここを差し替え）
+        playlistUrl: "https://www.youtube.com/playlist?list=PL7vGDFSIdqcAV1y2XOzGrA01dkxf_KPsn",
+
+        // relationImages: ["/characters/pdw_relation1.jpg"],
+        // ★その他の資料：ここに画像パスをコピペで増やすだけ
+        // materialsImages: ["/characters/pdw_doc1.jpg", "/characters/pdw_doc2.jpg"],
 
         characters: [
           {
@@ -451,10 +485,11 @@ const WorksCatalog = () => {
     window.history.pushState({}, "", `/`);
   };
 
-  // 作品切り替え時は、Characters と 相関図を開いた状態に戻す
+  // 作品切り替え時は、Characters / 相関図 / その他の資料 を開いた状態に戻す
   useEffect(() => {
     setCharactersOpen(true);
     setRelationsOpen(true);
+    setMaterialsOpen(true);
   }, [selectedWork]);
   // ===== ここまで =====
 
@@ -508,6 +543,12 @@ const WorksCatalog = () => {
     const relationImages = Array.isArray(selected.relationImages)
       ? selected.relationImages
       : [];
+
+    const materialsImages = Array.isArray(selected.materialsImages)
+      ? selected.materialsImages
+      : [];
+
+    const embedUrl = playlistToEmbedUrl(selected.playlistUrl);
 
     return (
       <Shell>
@@ -639,7 +680,10 @@ const WorksCatalog = () => {
                             </div>
 
                             <div className="mt-2">
-                              <ClampText text={char.description} clampLines={3} />
+                              <ClampText
+                                text={char.description}
+                                clampLines={3}
+                              />
                             </div>
                           </div>
                         </div>
@@ -652,7 +696,7 @@ const WorksCatalog = () => {
               {/* ==========================
                   相関図（独立トグル / Charactersと同列）
               ========================== */}
-              <section>
+              <section className="mb-10">
                 <button
                   type="button"
                   onClick={() => setRelationsOpen((v) => !v)}
@@ -700,8 +744,110 @@ const WorksCatalog = () => {
                     )}
                   </div>
                 )}
+              </section>
 
-                <p className="mt-6 text-xs text-slate-400"></p>
+              {/* ==========================
+                  その他の資料（独立トグル / 相関図の下）
+              ========================== */}
+              <section>
+                <button
+                  type="button"
+                  onClick={() => setMaterialsOpen((v) => !v)}
+                  className="w-full flex items-center justify-between gap-4"
+                >
+                  <h2 className={cx("text-lg md:text-xl", theme.accentText)}>
+                    Other Materials
+                  </h2>
+
+                  <span className="inline-flex items-center gap-2 text-xs text-white/70">
+                    {materialsOpen ? (
+                      <ChevronUp size={18} />
+                    ) : (
+                      <ChevronDown size={18} />
+                    )}
+                    {materialsOpen ? "閉じる" : "開く"}
+                  </span>
+                </button>
+
+                {materialsOpen && (
+                  <div className="mt-4 grid gap-4">
+                    {materialsImages.length > 0 ? (
+                      materialsImages.map((src, i) => (
+                        <div
+                          key={i}
+                          className={cx(
+                            "mx-auto w-full max-w-[560px] lg:max-w-[640px]",
+                            "overflow-hidden rounded-2xl border",
+                            theme.cardBorder,
+                            "bg-white/[0.03]"
+                          )}
+                        >
+                          <img
+                            src={src}
+                            alt={`Other Material ${i + 1}`}
+                            className="block w-full h-auto object-contain max-h-[70vh]"
+                            loading="lazy"
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <p className={cx("mt-3 text-sm", theme.subText)}>
+                        Other materials are preparing
+                      </p>
+                    )}
+                  </div>
+                )}
+              </section>
+
+              {/* ==========================
+                  YouTube Playlist（埋め込み / 最下部）
+              ========================== */}
+              <section className="mt-12">
+                <h2 className={cx("text-lg md:text-xl", theme.accentText)}>
+                  YouTube Playlist
+                </h2>
+
+                {embedUrl ? (
+                  <div
+                    className={cx(
+                      "mt-4 overflow-hidden rounded-2xl border",
+                      theme.cardBorder,
+                      "bg-white/[0.03]"
+                    )}
+                  >
+                    <div className="relative w-full aspect-video">
+                      <iframe
+                        className="absolute inset-0 w-full h-full"
+                        src={embedUrl}
+                        title={`${selected.title} YouTube playlist`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                      />
+                    </div>
+
+                    <div className="p-4 md:p-5">
+                      <a
+                        href={selected.playlistUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cx(
+                          "text-sm underline underline-offset-4 transition",
+                          theme.accentText
+                        )}
+                      >
+                        YouTubeで開く →
+                      </a>
+
+                      <p className="mt-2 text-xs text-slate-400 break-all">
+                        {selected.playlistUrl}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <p className={cx("mt-3 text-sm", theme.subText)}>
+                    YouTube playlist is preparing
+                  </p>
+                )}
               </section>
             </div>
           </div>
@@ -829,8 +975,8 @@ const WorksCatalog = () => {
           </p>
 
           <p className="mt-2 text-sm text-slate-200/80 leading-relaxed max-w-md">
-            漫画・絵画・イラスト・映像など複数の表現で、
-            物語性のあるオリジナルIPを制作。<br />
+            漫画・絵画・イラスト・映像など複数の表現で、物語性のあるオリジナルIPを制作。
+            <br />
             感情、物語を軸に世界を描いています。
           </p>
 
@@ -844,7 +990,8 @@ const WorksCatalog = () => {
           </a>
 
           <p className="mt-2 text-sm text-slate-300/80">
-            お仕事のご相談（個人の方も歓迎）<br />
+            お仕事のご相談（個人の方も歓迎）
+            <br />
             <a
               href="mailto:arararararura@gmail.com"
               className="inline-flex items-center gap-1 underline underline-offset-4 hover:text-slate-100 transition"
