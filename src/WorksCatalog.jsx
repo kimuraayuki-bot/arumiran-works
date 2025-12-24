@@ -46,7 +46,7 @@ const PATTERN_SVG = {
     <path d="M40 190 L110 120 L200 200"
       fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
   </svg>`,
-  
+
   postDemonWar: `<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240">
   <rect width="240" height="240" fill="none"/>
 
@@ -378,7 +378,7 @@ const WorksCatalog = () => {
             name: "魔王（????）",
             role: "魔王",
             description:
-              "自身の莫大な魔力に対等に向き合える者がおらず、ずっと魔王城に引きこもっていた。\n何千年も前から一度も外に出ていない。世間知らずな天然。\n勇者のことをはじめての対等な友人として気に入っている。",
+              "自身の莫大な魔力に対等に向き合える者がおらず、ずっと魔王城に引きこもっていた。\n何千年も前から一度も外に出ていない。\n世間知らずな天然。\n勇者のことをはじめての対等な友人として気に入っている。",
             image: "/characters/demon.jpg",
           },
           {
