@@ -889,7 +889,7 @@ const WorksCatalog = () => {
           </div>
 
           <p className="mt-5 text-sm text-slate-300/75">
-            あるみらん / Arumiranの作品アーカイブ
+            あるみらん｜オリジナルシリーズ公式サイト
           </p>
         </header>
 
