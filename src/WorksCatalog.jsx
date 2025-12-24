@@ -122,6 +122,10 @@ const ClampText = ({ text, clampLines = 3 }) => {
 const WorksCatalog = () => {
   const [selectedWork, setSelectedWork] = useState(null);
 
+  // ★ Characters と 相関図は「同列」なので state も別々
+  const [charactersOpen, setCharactersOpen] = useState(true);
+  const [relationsOpen, setRelationsOpen] = useState(true);
+
   const works = useMemo(
     () => [
       {
@@ -147,6 +151,10 @@ const WorksCatalog = () => {
           titleFont: "font-[var(--font-display)] tracking-[0.12em]",
         },
         summary: "「王女のブルーアネモネ号」",
+
+        // ★相関図：ここに画像パスをコピペで増やすだけ
+        relationImages: ["/characters/bs1.jpg", "/characters/bs2.jpg"],
+
         characters: [
           {
             name: "アドニス（20）",
@@ -186,27 +194,18 @@ const WorksCatalog = () => {
           {
             name: "ヘイゼル･ド･ヴィクトーニャ（17）",
             role: "—",
-            description: "ランポートの婚約者。ある私掠船の船員に身分違いの恋をしたと苛まれていたが、それは婚約者のランポートが扮した姿だった。\nランポートは隠しているようなので、いつか彼から話してくれるまで健気に陸で待ち続けている。\n引っ込み思案で恥ずかしがりな性格。",
+            description:
+              "ランポートの婚約者。ある私掠船の船員に身分違いの恋をしたと苛まれていたが、それは婚約者のランポートが扮した姿だった。\nランポートは隠しているようなので、いつか彼から話してくれるまで健気に陸で待ち続けている。\n引っ込み思案で恥ずかしがりな性格。",
             image: "/characters/hazel.jpg",
           },
-          {
-            name: "イヴ",
-            role: "—",
-            description: "準備中",
-            image: "/characters/eve.jpg",
-          },
+          { name: "イヴ", role: "—", description: "準備中", image: "/characters/eve.jpg" },
           {
             name: "ソフィア",
             role: "—",
             description: "準備中",
             image: "/characters/sophia.jpg",
           },
-          {
-            name: "テオ",
-            role: "—",
-            description: "準備中",
-            image: "/characters/theo.jpg",
-          },
+          { name: "テオ", role: "—", description: "準備中", image: "/characters/theo.jpg" },
           {
             name: "オルド・ポルトロッド",
             role: "—",
@@ -219,12 +218,7 @@ const WorksCatalog = () => {
             description: "準備中",
             image: "/characters/cetus.jpg",
           },
-          {
-            name: "ミラ",
-            role: "—",
-            description: "準備中",
-            image: "/characters/mira.jpg",
-          },
+          { name: "ミラ", role: "—", description: "準備中", image: "/characters/mira.jpg" },
         ],
       },
       {
@@ -250,6 +244,10 @@ const WorksCatalog = () => {
           titleFont: "font-[var(--font-display)] tracking-[0.12em]",
         },
         summary: "悪魔シリーズ",
+
+        // ★相関図：ここに画像パスをコピペで増やすだけ
+        relationImages: ["/characters/ds.jpg"],
+
         characters: [
           {
             name: "ミリオン",
@@ -328,8 +326,6 @@ const WorksCatalog = () => {
   );
 
   // ===== ここから「戻る/進む対応」 =====
-
-  // URLから選択状態を復元（初期表示 & popstate）
   useEffect(() => {
     const syncFromUrl = () => {
       const path = window.location.pathname;
@@ -348,18 +344,21 @@ const WorksCatalog = () => {
     return () => window.removeEventListener("popstate", syncFromUrl);
   }, []);
 
-  // 作品を開く（履歴を積む）
   const openWork = (id) => {
     setSelectedWork(id);
     window.history.pushState({}, "", `/works/${id}`);
   };
 
-  // 一覧に戻る（履歴を積む）
   const closeWork = () => {
     setSelectedWork(null);
     window.history.pushState({}, "", `/`);
   };
 
+  // 作品切り替え時は、Characters と 相関図を開いた状態に戻す
+  useEffect(() => {
+    setCharactersOpen(true);
+    setRelationsOpen(true);
+  }, [selectedWork]);
   // ===== ここまで =====
 
   const selected = selectedWork ? works.find((w) => w.id === selectedWork) : null;
@@ -390,7 +389,6 @@ const WorksCatalog = () => {
     <div className={cx("min-h-screen relative", theme.pageBg, "text-slate-100")}>
       <div className={cx("absolute inset-0 pointer-events-none", theme.glow)} />
 
-      {/* pattern: 確実に出る版 */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.75]"
         style={{
@@ -400,7 +398,6 @@ const WorksCatalog = () => {
         }}
       />
 
-      {/* subtle grain */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.06] bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22><filter id=%22n%22 x=%220%22 y=%220%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%222%22 stitchTiles=%22stitch%22/></filter><rect width=%2240%22 height=%2240%22 filter=%22url(%23n)%22 opacity=%220.45%22/></svg>')]" />
 
       <div className="relative z-10">{children}</div>
@@ -411,6 +408,10 @@ const WorksCatalog = () => {
   // 作品ページ
   // --------------------------
   if (selected) {
+    const relationImages = Array.isArray(selected.relationImages)
+      ? selected.relationImages
+      : [];
+
     return (
       <Shell>
         <div className="max-w-6xl mx-auto px-4 md:px-8 py-10">
@@ -485,53 +486,122 @@ const WorksCatalog = () => {
                 </div>
               </section>
 
-              <section>
-                <div className="flex items-center justify-between gap-4">
+              {/* ==========================
+                  Characters（独立トグル）
+              ========================== */}
+              <section className="mb-10">
+                <button
+                  type="button"
+                  onClick={() => setCharactersOpen((v) => !v)}
+                  className="w-full flex items-center justify-between gap-4"
+                >
                   <h2 className={cx("text-lg md:text-xl", theme.accentText)}>
                     Characters
                   </h2>
-                </div>
 
-                {/* 2列グリッド（md以上） */}
-                <div className="mt-5 grid gap-4 md:gap-5 md:grid-cols-2">
-                  {selected.characters.map((char, idx) => (
-                    <div
-                      key={idx}
-                      className={cx(
-                        "rounded-2xl border p-5 md:p-6",
-                        theme.cardBorder,
-                        "bg-white/[0.03]"
-                      )}
-                    >
-                      <div className="flex items-start gap-4">
-                        <img
-                          src={char.image}
-                          alt={char.name}
-                          className="w-16 h-16 md:w-18 md:h-18 rounded-full object-cover border border-white/15"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <h3 className="text-lg md:text-xl font-medium">
-                              {char.name}
-                            </h3>
-                            <span
-                              className={cx(
-                                "text-xs px-3 py-1 rounded-full",
-                                theme.chip
-                              )}
-                            >
-                              {char.role}
-                            </span>
-                          </div>
+                  <span className="inline-flex items-center gap-2 text-xs text-white/70">
+                    {charactersOpen ? (
+                      <ChevronUp size={18} />
+                    ) : (
+                      <ChevronDown size={18} />
+                    )}
+                    {charactersOpen ? "閉じる" : "開く"}
+                  </span>
+                </button>
 
-                          <div className="mt-2">
-                            <ClampText text={char.description} clampLines={3} />
+                {charactersOpen && (
+                  <div className="mt-5 grid gap-4 md:gap-5 md:grid-cols-2">
+                    {selected.characters.map((char, idx) => (
+                      <div
+                        key={idx}
+                        className={cx(
+                          "rounded-2xl border p-5 md:p-6",
+                          theme.cardBorder,
+                          "bg-white/[0.03]"
+                        )}
+                      >
+                        <div className="flex items-start gap-4">
+                          <img
+                            src={char.image}
+                            alt={char.name}
+                            className="w-16 h-16 md:w-18 md:h-18 rounded-full object-cover border border-white/15"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <h3 className="text-lg md:text-xl font-medium">
+                                {char.name}
+                              </h3>
+                              <span
+                                className={cx(
+                                  "text-xs px-3 py-1 rounded-full",
+                                  theme.chip
+                                )}
+                              >
+                                {char.role}
+                              </span>
+                            </div>
+
+                            <div className="mt-2">
+                              <ClampText text={char.description} clampLines={3} />
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
+              </section>
+
+              {/* ==========================
+                  相関図（独立トグル / Charactersと同列）
+              ========================== */}
+              <section>
+                <button
+                  type="button"
+                  onClick={() => setRelationsOpen((v) => !v)}
+                  className="w-full flex items-center justify-between gap-4"
+                >
+                  <h2 className={cx("text-lg md:text-xl", theme.accentText)}>
+                    Relationship Chart
+                  </h2>
+
+                  <span className="inline-flex items-center gap-2 text-xs text-white/70">
+                    {relationsOpen ? (
+                      <ChevronUp size={18} />
+                    ) : (
+                      <ChevronDown size={18} />
+                    )}
+                    {relationsOpen ? "閉じる" : "開く"}
+                  </span>
+                </button>
+
+                {relationsOpen && (
+                  <div className="mt-4 grid gap-4">
+                    {relationImages.length > 0 ? (
+                      relationImages.map((src, i) => (
+                        <div
+                          key={i}
+                          className={cx(
+                            "overflow-hidden rounded-2xl border",
+                            theme.cardBorder,
+                            "bg-white/[0.03]"
+                          )}
+                        >
+                          <img
+                            src={src}
+                            alt={`Relationship Chart ${i + 1}`}
+                            className="w-full h-auto object-contain"
+                            loading="lazy"
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <p className={cx("mt-3 text-sm", theme.subText)}>
+                        Relationship Chart is preparing
+                      </p>
+                    )}
+                  </div>
+                )}
 
                 <p className="mt-6 text-xs text-slate-400"></p>
               </section>
@@ -563,6 +633,7 @@ const WorksCatalog = () => {
             Works Archive
           </div>
 
+          {/* ★ここが Arumiran's Works の表記変更箇所 */}
           <h1
             className={cx("mt-3 text-4xl md:text-6xl", catalogTheme.titleFont)}
           >
@@ -651,24 +722,20 @@ const WorksCatalog = () => {
             className="w-20 h-20 rounded-full border border-white/20"
           />
 
-          {/* Name */}
           <p className="mt-2 text-lg font-semibold tracking-wide text-slate-100">
             あるみらん / Arumiran
           </p>
 
-          {/* Role */}
           <p className="text-sm text-slate-300/80">
             ビジュアルストーリーテラー･創作家
           </p>
 
-          {/* Description */}
           <p className="mt-2 text-sm text-slate-200/80 leading-relaxed max-w-md">
             漫画・絵画・イラスト・映像など複数の表現で、
             物語性のあるオリジナルIPを制作。<br />
             感情、物語を軸に世界を描いています。
           </p>
 
-          {/* Link */}
           <a
             href="https://lit.link/arurutan"
             target="_blank"
@@ -678,7 +745,6 @@ const WorksCatalog = () => {
             litlink（ご依頼・ポートフォリオ・SNSはこちら）
           </a>
 
-          {/* Contact */}
           <p className="mt-2 text-sm text-slate-300/80">
             お仕事のご相談（個人の方も歓迎）<br />
             <a
