@@ -46,6 +46,27 @@ const PATTERN_SVG = {
     <path d="M40 190 L110 120 L200 200"
       fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
   </svg>`,
+  
+  postDemonWar: `<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240">
+  <rect width="240" height="240" fill="none"/>
+
+  <!-- 干渉円 -->
+  <circle cx="120" cy="120" r="36" fill="none" stroke="#ffffff" stroke-opacity="0.10" stroke-width="1"/>
+  <circle cx="120" cy="120" r="68" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1"/>
+  <circle cx="120" cy="120" r="102" fill="none" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+
+  <!-- 魔力の流れ -->
+  <path d="M0 80 C60 60 120 100 180 80 210 70 230 75 240 80"
+    fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+  <path d="M0 160 C70 140 130 180 200 160"
+    fill="none" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+
+  <!-- 星屑 -->
+  <circle cx="48" cy="52" r="1.5" fill="#ffffff" fill-opacity="0.18"/>
+  <circle cx="190" cy="90" r="1.2" fill="#ffffff" fill-opacity="0.15"/>
+  <circle cx="140" cy="190" r="1.4" fill="#ffffff" fill-opacity="0.16"/>
+</svg>`,
+
 };
 
 const Ornament = ({ tone = "amber" }) => {
@@ -131,7 +152,7 @@ const WorksCatalog = () => {
       {
         id: 1,
         title: "王女のブルーアネモネ号",
-        subtitle: "Princess Blue Anemone",
+        subtitle: "The H.R.H.S Blue Anemone",
         image: "/characters/all.jpg",
         theme: {
           pageBg: "bg-[#071524]",
@@ -150,7 +171,7 @@ const WorksCatalog = () => {
             "border border-sky-100/25 text-sky-50 hover:bg-sky-100/10",
           titleFont: "font-[var(--font-display)] tracking-[0.12em]",
         },
-        summary: "「王女のブルーアネモネ号」",
+        summary: "王女のブルーアネモネ号",
 
         // ★相関図：ここに画像パスをコピペで増やすだけ
         relationImages: ["/characters/bs1.jpg", "/characters/bs2.jpg"],
@@ -218,7 +239,10 @@ const WorksCatalog = () => {
             description: "準備中",
             image: "/characters/cetus.jpg",
           },
-          { name: "ミラ", role: "—", description: "準備中", image: "/characters/mira.jpg" },
+          { name: "ミラ", 
+            role: "—", 
+            description: "準備中", 
+            image: "/characters/mira.jpg" },
         ],
       },
       {
@@ -318,6 +342,79 @@ const WorksCatalog = () => {
             description:
               "九官鳥の悪魔。自由自在に声色を操り、人間を騙し誘い出す。\nリヴァイアサンの側近兼友として地獄に人を導く役割を担っていたが、リヴァイアサンがギムレットに殺された際自身も深手を追い、人間界へと逃げ堕ちた。\n傷の手当てをしてくれた淡香に対価を払うため、(食事のついでに)両親を殺したことで淡香に惚れられてしまう。\n淡香と付き合ってる方が面白そうだという理由で、地獄に戻らず人の姿で暮らしている。\n時々刺されるが、そんなところがかわいいらしい。",
             image: "/characters/gracula.jpg",
+          },
+        ],
+      },
+            {
+        id: 3,
+        title: "人類と魔族が手を取り合った後の話",
+        subtitle: "Post Demon War",
+        image: "/characters/pdw.jpg",
+        theme: {
+          pageBg: "bg-[#120A1F]", // 濃い紫
+          glow:
+            "bg-[radial-gradient(1000px_circle_at_20%_15%,rgba(168,85,247,0.22),transparent_55%),radial-gradient(900px_circle_at_80%_25%,rgba(236,72,153,0.14),transparent_55%),radial-gradient(900px_circle_at_50%_95%,rgba(255,255,255,0.05),transparent_55%)]",
+          patternKey: "postDemonWar", // ★新しい模様キー
+          tone: "rose", // 既存の rose を流用
+          accentText: "text-fuchsia-100",
+          subText: "text-fuchsia-100/70",
+          line: "bg-fuchsia-200/30",
+          cardBorder: "border-fuchsia-100/15",
+          cardBg: "bg-white/[0.04] hover:bg-white/[0.06]",
+          chip:
+            "bg-fuchsia-100/10 text-fuchsia-50 border border-fuchsia-100/20 backdrop-blur",
+          button:
+            "border border-fuchsia-100/25 text-fuchsia-50 hover:bg-fuchsia-100/10",
+          titleFont: "font-[var(--font-display)] tracking-[0.12em]",
+        },
+
+        summary: "人類と魔族が手を取り合った後の話",
+
+        // ★相関図：ここに画像パスをコピペで増やすだけ
+        //relationImages: ["/characters/bs1.jpg", "/characters/bs2.jpg"],
+
+        characters: [
+          {
+            name: "魔王（????）",
+            role: "魔王",
+            description:
+              "自身の莫大な魔力に対等に向き合える者がおらず、ずっと魔王城に引きこもっていた。\n何千年も前から一度も外に出ていない。世間知らずな天然。\n勇者のことをはじめての対等な友人として気に入っている。",
+            image: "/characters/demon.jpg",
+          },
+          {
+            name: "コスモ（18）",
+            role: "勇者",
+            description:
+              "世界の声の導きにより、勇者として立ち上がった。\n圧倒的な魔力量を誇る魔王に魔族は心酔していること、魔王は引きこもっていることを知り、最後の闘いで魔王に和平を持ちかける。\n最終決戦で魔王と互角に闘い勝利するなど普通に強い。",
+            image: "/characters/cosmo.jpg",
+          },
+          {
+            name: "ヴィヴィアン（98）",
+            role: "戦乙女",
+            description:
+              "優しく、強く、美しく、礼儀正しいお姉さん。\n世界の声を勇者に伝え、ともに魔王討伐の旅に出た。\n清楚そうな顔をして、わりと不純なことに興味がある。",
+            image: "/characters/vivian.jpg",
+          },
+          {
+            name: "モニカ（17）",
+            role: "主計長",
+            description:
+              "我こそ至高の魔法使いと自負していたが、過去魔王に挑み力の差を思い知った。\nプライドが高く負けず嫌い。\n魔王に再度挑むべく、勇者一行に加わった。",
+            image: "/characters/monica.jpg",
+          },
+          {
+            name: "エド（55）",
+            role: "武器商人",
+            description:
+              "温厚かつ朗らかな老人。\nまったりとしているが、武具にかける情熱は誰にも負けない。",
+            image: "/characters/ed.jpg",
+          },
+          {
+            name: "アマンダ（????）",
+            role: "ナイトメア",
+            description:
+              "魔王の側近。\n魔王が魔王であった時から仕えているとか。\n魔王に絶対的な忠誠を誓っている。\n魔族の名づけは魔王が行う。\nこの名前を気に入っているらしい。",
+            image: "/characters/amanda.jpg",
           },
         ],
       },
