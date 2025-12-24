@@ -184,6 +184,12 @@ const WorksCatalog = () => {
             image: "/characters/panga.jpg",
           },
           {
+            name: "ヘイゼル･ド･ヴィクトーニャ（17）",
+            role: "—",
+            description: "ランポートの婚約者。ある私掠船の船員に身分違いの恋をしたと苛まれていたが、それは婚約者のランポートが扮した姿だった。\nランポートは隠しているようなので、いつか彼から話してくれるまで健気に陸で待ち続けている。\n引っ込み思案で恥ずかしがりな性格。",
+            image: "/characters/hazel.jpg",
+          },
+          {
             name: "イヴ",
             role: "—",
             description: "準備中",
@@ -193,31 +199,31 @@ const WorksCatalog = () => {
             name: "ソフィア",
             role: "—",
             description: "準備中",
-            image: "/characters/.jpg",
+            image: "/characters/sophia.jpg",
           },
           {
             name: "テオ",
             role: "—",
             description: "準備中",
-            image: "/characters/.jpg",
+            image: "/characters/theo.jpg",
           },
           {
-            name: "オルド･ポルトロッド",
+            name: "オルド・ポルトロッド",
             role: "—",
             description: "準備中",
-            image: "/characters/.jpg",
+            image: "/characters/ordo.jpg",
           },
           {
             name: "ケートス",
             role: "—",
             description: "準備中",
-            image: "/characters/.jpg",
+            image: "/characters/cetus.jpg",
           },
           {
             name: "ミラ",
             role: "—",
             description: "準備中",
-            image: "/characters/.jpg",
+            image: "/characters/mira.jpg",
           },
         ],
       },
@@ -250,70 +256,70 @@ const WorksCatalog = () => {
             role: "—",
             description:
               "人間の血が半分混じっている。\n妖艶な美しい見た目とは反対に結構パワータイプ。\n堅気で情に厚い男。\n目的のためなら手段を選ばない父であるギムレットのやり方に憤り、一矢報いることを決意する。",
-            image: "/characters/.million.jpg",
+            image: "/characters/million.jpg",
           },
           {
             name: "カーマ",
             role: "—",
             description:
               "面白いことが大好きな異教の悪魔。\nギムレットの悪事の片棒を担っていたが、妻の死、ミリオンの勧誘をきっかけに彼の元を離れた。",
-            image: "/characters/.jpg",
+            image: "/characters/karma.jpg",
           },
           {
             name: "ギムレット",
             role: "—",
             description:
               "下級悪魔のインキュバスの身でありながら、地獄の支配者階級に最も近い位置まで昇りつめた。\n彼の野心は留まるところを知らない。",
-            image: "/characters/.jpg",
+            image: "/characters/gimlet.jpg",
           },
           {
             name: "ルシファー",
             role: "王",
             description:
               "神との戦いに敗れ堕天。\n最高位であったその手腕で法による地獄の統治を試みるなど、以降王として君臨する。\nただし彼の威厳は本命の前では無力になるようだ。",
-            image: "/characters/.jpg",
+            image: "/characters/lucifer.jpg",
           },
           {
             name: "アスモデウス",
             role: "—",
             description:
               "地獄のあらゆるセクシーを取り仕切るお姉さま。\nギムレットに捨てられ行き場のないミリオンとまだ赤子だった妹を拾い育ててくれた。\nミリオンにとっては上司であり恩人。",
-            image: "/characters/.jpg",
+            image: "/characters/asmodeus.jpg",
           },
           {
             name: "ベルフェゴール",
             role: "怠惰の悪魔",
             description:
               "なにもかもがめんどくさくてしょうがない怠惰の悪魔。\nとりあえず寝てるから起こさないで。",
-            image: "/characters/.jpg",
+            image: "/characters/belphegor.jpg",
           },
           {
             name: "マモン",
             role: "—",
             description:
               "かつては人間の魔導士であった。\n自身の欲が満たされるなら他のことはわりとなんでもいい。\n地獄の中で最も悪魔らしい悪魔かもしれない。",
-            image: "/characters/.jpg",
+            image: "/characters/mammon.jpg",
           },
           {
             name: "ベルゼブブ",
             role: "—",
             description:
               "かつては豊穣の神であったが、異教として貶められ悪魔となった。\n満たされない飢えという業をせおっている。",
-            image: "/characters/.jpg",
+            image: "/characters/beelzebub.jpg",
           },
           {
             name: "鰐梨淡香（21）",
             role: "—",
             description:
               "グラクラの恋人で愛が重ための女子大学生。\n幼少期、毒親だった両親を殺されたことをきっかけにグラクラに惚れ、執拗に探し続けついに大学で再会を果たした。\nグラクラが人間でないことは割とどうでもよく、自分さえ見ててくれればそれでいいと思っている。\nふらふらしがちなグラクラにキレて何回も刺したことがある。",
-            image: "/characters/.jpg",
+            image: "/characters/ayaka.jpg",
           },
           {
             name: "グラクラ",
             role: "—",
             description:
               "九官鳥の悪魔。自由自在に声色を操り、人間を騙し誘い出す。\nリヴァイアサンの側近兼友として地獄に人を導く役割を担っていたが、リヴァイアサンがギムレットに殺された際自身も深手を追い、人間界へと逃げ堕ちた。\n傷の手当てをしてくれた淡香に対価を払うため、(食事のついでに)両親を殺したことで淡香に惚れられてしまう。\n淡香と付き合ってる方が面白そうだという理由で、地獄に戻らず人の姿で暮らしている。\n時々刺されるが、そんなところがかわいいらしい。",
-            image: "/characters/.jpg",
+            image: "/characters/gracula.jpg",
           },
         ],
       },
