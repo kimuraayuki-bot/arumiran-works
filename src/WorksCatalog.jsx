@@ -582,6 +582,7 @@ const WorksCatalog = () => {
                         <div
                           key={i}
                           className={cx(
+                            "mx-auto w-full max-w-[560px] lg:max-w-[640px]",
                             "overflow-hidden rounded-2xl border",
                             theme.cardBorder,
                             "bg-white/[0.03]"
@@ -590,7 +591,7 @@ const WorksCatalog = () => {
                           <img
                             src={src}
                             alt={`Relationship Chart ${i + 1}`}
-                            className="w-full h-auto object-contain"
+                            className="block w-full h-auto object-contain max-h-[70vh]"
                             loading="lazy"
                           />
                         </div>
