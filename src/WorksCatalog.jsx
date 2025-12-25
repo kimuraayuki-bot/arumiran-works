@@ -431,7 +431,7 @@ const WorksCatalog = () => {
           },
           {
             name: "モニカ（17）",
-            role: "主計長",
+            role: "魔術師",
             description:
               "我こそ至高の魔法使いと自負していたが、過去魔王に挑み力の差を思い知った。\nプライドが高く負けず嫌い。\n魔王に再度挑むべく、勇者一行に加わった。",
             image: "/characters/monica.jpg",
