@@ -197,7 +197,7 @@ const WorksCatalog = () => {
         playlistUrl: "https://www.youtube.com/playlist?list=PL7vGDFSIdqcCWFHSTTX7_EQet-5BRoSVh",
 
         // ★相関図：ここに画像パスをコピペで増やすだけ
-        relationImages: ["/characters/bs1.jpg", "/characters/bs2.jpg"],
+        relationImages: ["/characters/bs3.jpg"],
 
         // ★その他の資料：ここに画像パスをコピペで増やすだけ
         materialsImages: [
