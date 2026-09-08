@@ -1,6 +1,9 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { ArrowLeft, ChevronDown, ChevronUp } from "lucide-react";
 
+const BLUE_ANEMONE_OFFICIAL_URL =
+  "https://blue-anemone-official.vercel.app";
+
 function cx(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -498,6 +501,13 @@ const WorksCatalog = () => {
   }, []);
 
   const openWork = (id) => {
+    // 作品一覧から選んだ場合だけ、ブルーアネモネ号は専用公式サイトへ遷移する。
+    // /works/1 を直接開いたときは、このアーカイブ内の詳細ページを表示する。
+    if (id === 1) {
+      window.location.assign(BLUE_ANEMONE_OFFICIAL_URL);
+      return;
+    }
+
     setSelectedWork(id);
     window.history.pushState({}, "", `/works/${id}`);
   };
