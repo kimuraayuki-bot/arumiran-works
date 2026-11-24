@@ -1,2 +1,33 @@
-@import "tailwindcss";
+:root {
+  font-family: "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  color: #181411;
+  background: #fbf9f4;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { min-width: 320px; background: #fbf9f4; scroll-behavior: smooth; }
+body { min-width: 320px; min-height: 100svh; margin: 0; background: #fbf9f4; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button, input, textarea, select { font: inherit; }
+a { color: inherit; }
+img, svg { display: block; }
+img { max-width: 100%; }
+button { color: inherit; }
+::selection { color: #fbf9f4; background: #9d2b28; }
+:focus-visible { outline: 2px solid #9d2b28; outline-offset: 4px; }
+:where([id], :focus) { scroll-margin-block-start: 6rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 

@@ -1,7 +1,7 @@
-import WorksCatalog from "./WorksCatalog";
+import PortfolioSite from "./PortfolioSite";
 
 function App() {
-  return <WorksCatalog />;
+  return <PortfolioSite />;
 }
 
 export default App;
