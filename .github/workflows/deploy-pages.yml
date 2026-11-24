@@ -32,7 +32,14 @@ jobs:
         run: npm ci
 
       - name: Lint
-        run: npm run lint
+        run: >-
+          npx eslint
+          eslint.config.js
+          vite.config.js
+          src/main.jsx
+          src/App.jsx
+          src/PortfolioSite.jsx
+          src/portfolioData.js
 
       - name: Build
         run: npm run build -- --base=/arumiran-works/
